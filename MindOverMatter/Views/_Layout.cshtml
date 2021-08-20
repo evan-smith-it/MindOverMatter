@@ -1,0 +1,69 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using MindOverMatter.Models.Identity;
+@inject SignInManager<ApplicationUser> signInManager;
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link  rel="shortcut icon" href="~/favicon.png" type="image/x-icon" runat="server"/>
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="@ViewBag.Style" type="text/css" />
+    <link rel="stylesheet" href="~/Home/Home.css" type="text/css" />
+    <script type="text/javascript" src="~/Home/common.js"></script>
+    <script src="@ViewBag.JavaScript"></script>
+    <script src="~/External/jquery-2.1.4.min.js" type="text/javascript"></script>
+    <script src="~/External/paper-full.min.js" type="text/javascript"></script>
+    <script src="~/Home/CanvasTest.js" type="text/paperscript" canvas="theCanvas"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div id="topBar">
+        <div id="LeftHeader">
+            @if (User.Identity.IsAuthenticated)
+            {
+                <label id="userInfo">@User.Identity.Name</label>
+            }
+        </div>
+        <div id="CenterHeeader">
+            <label id="HeaderName">Mind Over Matter</label>
+        </div>
+        <div id="RightHeader">
+            <span id="Ver">
+                Version 1.0
+            </span>
+            <span id="Date">
+                10/28/2019
+            </span>
+        </div>
+    </div>
+    <div id="wrapper">
+        <div id="navBar">
+            @*Do not put  a semicolon after these. They will be rendered*@
+
+            @if (!User.Identity.IsAuthenticated)
+            {
+                <a href='@Url.Action("LoginPage", "Account")'>Login&nbsp;/&nbsp;Register </a>
+
+            }
+            else
+            {
+                @Html.ActionLink("Home", "Index", "Home")
+                @if (User.IsInRole("Admin"))
+                {
+                    @Html.ActionLink("Administration", "AdminPage", "Account")
+                }
+                @Html.ActionLink("Signout", "Logout", "Account")
+            }
+
+        </div>
+        <div>
+            @RenderBody()
+        </div>
+    </div>
+    <div id="footer">
+
+    </div>
+</body>
+</html>
